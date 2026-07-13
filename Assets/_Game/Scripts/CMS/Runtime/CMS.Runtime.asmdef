@@ -1,0 +1,17 @@
+{
+    "name": "CMS.Runtime",
+    "rootNamespace": "Game.CMS.Runtime",
+    "references": [
+        "UniTask",
+        "Unity.Localization"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

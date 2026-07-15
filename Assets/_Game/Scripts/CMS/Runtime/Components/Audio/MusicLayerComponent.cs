@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Game.CMS.Runtime.Components.Audio
 {
+    [Serializable]
     public class MusicLayerComponent : CMSComponent
     {
         [Serializable]

@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace Game.CMS.Editor
 {
-    [CustomEditor(typeof(CMSPrefab))]
-    public sealed class CMSPrefabEditor : UnityEditor.Editor, ICMSEntityEditor
+    [CustomEditor(typeof(CMSAsset))]
+    public sealed class CMSAssetEditor : UnityEditor.Editor, ICMSEntityEditor
     {
         private SerializedProperty _componentsProperty;
         private SerializedProperty _entityIdProperty;
@@ -30,35 +30,34 @@ namespace Game.CMS.Editor
 
         internal static void RefreshAllEntityIds()
         {
-            string[] prefabGuids = AssetDatabase.FindAssets("t:Prefab", new[] { "Assets/_Game/Resources/CMS" });
-            foreach (string prefabGuid in prefabGuids)
+            string[] assetGuids = AssetDatabase.FindAssets("t:CMSAsset", new[] { "Assets/_Game/Resources/CMS" });
+            foreach (string assetGuid in assetGuids)
             {
-                string path = AssetDatabase.GUIDToAssetPath(prefabGuid);
-                GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
-                CMSPrefab cmsPrefab = prefab != null ? prefab.GetComponent<CMSPrefab>() : null;
-                if (cmsPrefab == null)
+                string path = AssetDatabase.GUIDToAssetPath(assetGuid);
+                CMSAsset cmsAsset = AssetDatabase.LoadAssetAtPath<CMSAsset>(path);
+                if (cmsAsset == null)
                     continue;
 
-                var serializedPrefab = new SerializedObject(cmsPrefab);
-                RefreshEntityId(serializedPrefab);
+                var serializedAsset = new SerializedObject(cmsAsset);
+                RefreshEntityId(serializedAsset);
             }
         }
 
-        private static void RefreshEntityId(SerializedObject serializedPrefab)
+        private static void RefreshEntityId(SerializedObject serializedAsset)
         {
-            string assetPath = AssetDatabase.GetAssetPath(serializedPrefab.targetObject);
+            string assetPath = AssetDatabase.GetAssetPath(serializedAsset.targetObject);
             const string resourcesPrefix = "Assets/_Game/Resources/";
             const string cmsPrefix = resourcesPrefix + "CMS/";
             if (!assetPath.StartsWith(cmsPrefix, StringComparison.Ordinal) ||
-                !assetPath.EndsWith(".prefab", StringComparison.OrdinalIgnoreCase))
+                !assetPath.EndsWith(".asset", StringComparison.OrdinalIgnoreCase))
                 return;
 
-            if (serializedPrefab.targetObject is not CMSPrefab cmsPrefab)
+            if (serializedAsset.targetObject is not CMSAsset cmsAsset)
                 return;
 
-            cmsPrefab.PingEntity();
-            serializedPrefab.Update();
-            EditorUtility.SetDirty(cmsPrefab);
+            cmsAsset.PingEntity();
+            serializedAsset.Update();
+            EditorUtility.SetDirty(cmsAsset);
         }
 
         private void DrawEntityInfoSection()

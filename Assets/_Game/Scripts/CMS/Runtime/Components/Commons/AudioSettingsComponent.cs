@@ -6,6 +6,7 @@ using UnityEngine.Audio;
 
 namespace Game.CMS.Runtime.Components.Commons
 {
+    [Serializable]
     public class AudioSettingsComponent : CMSComponent
     {
         [Serializable]

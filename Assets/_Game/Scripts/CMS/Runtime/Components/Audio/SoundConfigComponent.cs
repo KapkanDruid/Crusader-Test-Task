@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 
 namespace Game.CMS.Runtime.Components.Audio
 {
+    [Serializable]
     public class SoundConfigComponent : CMSComponent
     {
         [SerializeField, Range(0, 5)] private float _volume = 1f;

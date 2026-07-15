@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Game.CMS.Runtime.Utils;
-using Game.CMS.Runtime.Utils.Helpers;
 using UnityEngine;
 
 namespace Game.CMS.Runtime
@@ -78,22 +77,6 @@ namespace Game.CMS.Runtime
             var stringBuilder = new StringBuilder();
             stringBuilder.Append("AutoCachedEntities:");
 
-            var entities = Helpers.ReflectionHelper.FindAllSubsClasses<CMSEntity>();
-            foreach (var entity in entities)
-            {
-                try
-                {
-                    CMSEntity entityInstance = Activator.CreateInstance(entity, entity.FullName, null) as CMSEntity;
-                    _entitiesDatabase.Add(entityInstance);
-
-                    if (entityInstance != null) stringBuilder.Append($"\n{entityInstance.EntityId}");
-                }
-                catch (Exception exception)
-                {
-                    LogUtil.LogError(nameof(CMSContainer), $"Failed to initialize {entity.Name}: {exception.Message}");
-                }
-            }
-
             var entityPrefabs = Resources.LoadAll<CMSPrefab>("");
             foreach (var entityPrefab in entityPrefabs)
             {
@@ -111,6 +94,26 @@ namespace Game.CMS.Runtime
                 catch (Exception exception)
                 {
                     LogUtil.LogError(nameof(CMSContainer), $"Failed to initialize {entityPrefab.EntityId}: {exception.Message}");
+                }
+            }
+
+            var entityAssets = Resources.LoadAll<CMSAsset>("");
+            foreach (var entityAsset in entityAssets)
+            {
+                try
+                {
+#if UNITY_EDITOR
+                    entityAsset.PingEntity();
+                    UnityEditor.EditorUtility.SetDirty(entityAsset);
+#endif
+                    stringBuilder.Append($"\n{entityAsset.EntityId}");
+
+                    var entity = new CMSEntity(entityAsset.EntityId, entityAsset.Components);
+                    _entitiesDatabase.Add(entity);
+                }
+                catch (Exception exception)
+                {
+                    LogUtil.LogError(nameof(CMSContainer), $"Failed to initialize {entityAsset.EntityId}: {exception.Message}");
                 }
             }
 

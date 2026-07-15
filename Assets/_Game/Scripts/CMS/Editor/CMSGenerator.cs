@@ -32,8 +32,11 @@ namespace Game.CMS.Editor
         private static void Reload()
         {
             CMSPrefabEditor.RefreshAllEntityIds();
+            CMSAssetEditor.RefreshAllEntityIds();
+            AssetDatabase.SaveAssets();
             GenerateResourceClass();
             CMSContainer.Reload();
+            AssetDatabase.SaveAssets();
         }
 
         private static void GenerateResourceClass()
@@ -79,22 +82,56 @@ namespace Game.CMS.Editor
 
         private static void GenerateFolderConstants(string folderPath, StringBuilder builder, string indent)
         {
+            var usedIdentifiers = new HashSet<string>();
+
             foreach (string subFolder in Directory.GetDirectories(folderPath).OrderBy(path => path))
             {
                 string folderName = SanitizeIdentifier(Path.GetFileName(subFolder));
+                EnsureUniqueIdentifier(usedIdentifiers, folderName, subFolder);
                 builder.AppendLine($"{indent}public static class {folderName}");
                 builder.AppendLine($"{indent}{{");
                 GenerateFolderConstants(subFolder, builder, indent + "    ");
                 builder.AppendLine($"{indent}}}");
             }
 
-            foreach (string file in Directory.GetFiles(folderPath, "*.prefab").OrderBy(path => path))
+            foreach (string file in Directory.GetFiles(folderPath)
+                         .Where(IsCMSEntityFile)
+                         .OrderBy(path => path))
             {
                 string fileName = SanitizeIdentifier(Path.GetFileNameWithoutExtension(file));
                 string relativePath = GetResourceRelativePath(file);
                 if (!string.IsNullOrEmpty(fileName) && relativePath != null)
+                {
+                    EnsureUniqueIdentifier(usedIdentifiers, fileName, file);
                     builder.AppendLine($"{indent}public const string {fileName} = \"{relativePath}\";");
+                }
             }
+        }
+
+        private static bool IsCMSEntityFile(string fullPath)
+        {
+            string normalizedPath = fullPath.Replace('\\', '/');
+            string assetsPath = Application.dataPath.Replace('\\', '/');
+            if (!normalizedPath.StartsWith(assetsPath + "/", StringComparison.OrdinalIgnoreCase))
+                return false;
+
+            string assetPath = "Assets" + normalizedPath.Substring(assetsPath.Length);
+            string extension = Path.GetExtension(normalizedPath);
+
+            if (extension.Equals(".asset", StringComparison.OrdinalIgnoreCase))
+                return AssetDatabase.LoadAssetAtPath<CMSAsset>(assetPath) != null;
+
+            if (!extension.Equals(".prefab", StringComparison.OrdinalIgnoreCase))
+                return false;
+
+            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(assetPath);
+            return prefab != null && prefab.GetComponent<CMSPrefab>() != null;
+        }
+
+        private static void EnsureUniqueIdentifier(HashSet<string> usedIdentifiers, string identifier, string path)
+        {
+            if (!usedIdentifiers.Add(identifier))
+                throw new InvalidOperationException($"Duplicate CMSPath identifier '{identifier}' in '{path}'.");
         }
 
         private static string SanitizeIdentifier(string name)

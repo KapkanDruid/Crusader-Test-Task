@@ -18,7 +18,15 @@ namespace Game.CMS.Editor
             string prefabPath = AssetDatabase.GenerateUniqueAssetPath(
                 Path.Combine(folderPath, "CMSPrefab.prefab").Replace('\\', '/'));
 
-            PrefabUtility.SaveAsPrefabAsset(instance, prefabPath);
+            GameObject prefabAsset = PrefabUtility.SaveAsPrefabAsset(instance, prefabPath);
+            if (prefabAsset != null)
+            {
+                CMSPrefab cmsPrefab = prefabAsset.GetComponent<CMSPrefab>();
+                cmsPrefab.PingEntity();
+                EditorUtility.SetDirty(cmsPrefab);
+                PrefabUtility.SavePrefabAsset(prefabAsset);
+            }
+
             Object.DestroyImmediate(instance);
 
             Object createdPrefab = AssetDatabase.LoadAssetAtPath<Object>(prefabPath);

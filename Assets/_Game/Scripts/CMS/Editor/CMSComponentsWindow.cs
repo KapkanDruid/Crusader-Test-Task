@@ -39,12 +39,13 @@ namespace Game.CMS.Editor
         private void AddComponentToFolder(Type type, string namespaceName)
         {
             ComponentFolder folder = _rootFolder;
-            foreach (string segment in namespaceName.Split('.'))
+            if (!string.IsNullOrEmpty(namespaceName))
             {
-                if (!folder.Subfolders.TryGetValue(segment, out ComponentFolder child))
+                string folderName = namespaceName.Split('.').Last();
+                if (!folder.Subfolders.TryGetValue(folderName, out ComponentFolder child))
                 {
-                    child = new ComponentFolder { DisplayName = segment };
-                    folder.Subfolders.Add(segment, child);
+                    child = new ComponentFolder { DisplayName = folderName };
+                    folder.Subfolders.Add(folderName, child);
                 }
 
                 folder = child;

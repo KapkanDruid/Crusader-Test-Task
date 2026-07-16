@@ -8,7 +8,9 @@ namespace Game.CMS.Runtime
 {
     public static class CMSPath
     {
-        public const string CMSAsset = "CMS/CMSAsset";
-        public const string qweqweqe = "CMS/qweqweqe";
+        public static class Configs
+        {
+            public const string InventoryConfig = "CMS/Configs/InventoryConfig";
+        }
     }
 }

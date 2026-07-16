@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f2319fb035c477aa16ac903c16a9062, type: 3}
+  m_Name: InventoryConfig
+  m_EditorClassIdentifier: CMS.Runtime::Game.CMS.Runtime.CMSAsset
+  entityId: CMS/Configs/InventoryConfig
+  Components:
+  - rid: 1064589315204710608
+  - rid: 1064589315204710616
+  references:
+    version: 2
+    RefIds:
+    - rid: 1064589315204710608
+      type: {class: GridCMSComponent, ns: Game.Runtime.Data.CMSComponents.Config, asm: Runtime}
+      data:
+        gridData:
+          gridPattern:
+          - {x: 0, y: 0}
+          - {x: 0, y: 1}
+          gridSize: {x: 5, y: 5}
+    - rid: 1064589315204710616
+      type: {class: InventoryViewConfigComponent, ns: Game.Runtime.Data.CMSComponents.Config, asm: Runtime}
+      data:
+        _cellSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+        _cellSize: 1

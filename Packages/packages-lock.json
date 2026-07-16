@@ -380,6 +380,13 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.urbandruids.unity-quick-tests": {
+      "version": "https://github.com/KapkanDruid/Unity-Quick-Tests.git#v1.1.2",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "88cb1f1108d2e8bd4cd86501fcf6afd706bf4dc0"
+    },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",
       "depth": 0,

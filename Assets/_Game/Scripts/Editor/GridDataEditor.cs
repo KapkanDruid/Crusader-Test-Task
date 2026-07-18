@@ -29,7 +29,13 @@ namespace Game.Editor
 
         private void OnEnable()
         {
-            _gridConfig = (GridConfig)target;
+            if (target is not GridConfig gridConfig)
+            {
+                _gridConfig = null;
+                return;
+            }
+
+            _gridConfig = gridConfig;
 
             serializedObject.Update();
             _listProperty = serializedObject.FindProperty("gridPattern");
@@ -53,6 +59,9 @@ namespace Game.Editor
 
         public override void OnInspectorGUI()
         {
+            if (_gridConfig == null)
+                return;
+
             ShowHelpBoxes();
             SetGridSize();
 

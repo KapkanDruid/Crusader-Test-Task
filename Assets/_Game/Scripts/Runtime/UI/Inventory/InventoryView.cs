@@ -1,12 +1,11 @@
 using Game.CMS.Runtime;
 using Game.Runtime.Data.CMSComponents.Config;
-using ModestTree.Util;
+using Game.Runtime.Items;
 using ObservableCollections;
 using R3;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Graphs;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -15,7 +14,7 @@ using Object = UnityEngine.Object;
 namespace Game.Runtime.UI.Inventory
 {
     [Serializable]
-    public class InventoryView : IInitializable, IDisposable
+    public class InventoryView : IDisposable
     {
         [SerializeField] private RectTransform _inventoryRoot;
 
@@ -25,6 +24,8 @@ namespace Game.Runtime.UI.Inventory
         private InventoryViewConfigComponent _config;
         private readonly CompositeDisposable _disposable = new();
         private readonly Dictionary<Vector2Int, RectTransform> _cells = new();
+        private readonly HashSet<ItemBehavior> _dimmedItems = new();
+        private ItemBehavior _highlightedItem;
 
         [Inject]
         private void Construct(InventoryModel model, IInventoryViewCommands commands)
@@ -33,7 +34,7 @@ namespace Game.Runtime.UI.Inventory
             _commands = commands;
         }
 
-        public void Initialize()
+        public void Setup()
         {
             _config = CMSContainer.Get(CMSPath.Configs.InventoryConfig).GetComponent<InventoryViewConfigComponent>();
 
@@ -47,6 +48,10 @@ namespace Game.Runtime.UI.Inventory
                 .ObserveRemove()
                 .Select(eventData => eventData.Value)
                 .Subscribe(RemoveCel)
+                .AddTo(_disposable);
+
+            _model.PlacementPreview
+                .Subscribe(HandlePlacementPreview)
                 .AddTo(_disposable);
         }
 
@@ -72,6 +77,7 @@ namespace Game.Runtime.UI.Inventory
 
             image.sprite = _config.CellSprite;
             image.rectTransform.sizeDelta = Vector2.one * _config.CellImageSize;
+            image.raycastTarget = false;
 
             _commands.SetCell(gridPosition, cell);
             _cells[gridPosition] = cell;
@@ -84,8 +90,48 @@ namespace Game.Runtime.UI.Inventory
             _cells.Remove(gridPosition);
         }
 
+        private void HandlePlacementPreview((ItemBehavior Item, RectTransform Slot, ItemRotation Rotation) preview)
+        {
+            if (preview.Item == null)
+            {
+                HidePlacementPreview();
+                return;
+            }
+
+            if (_highlightedItem != null && _highlightedItem != preview.Item)
+                HidePlacementPreview();
+
+            if (_highlightedItem == null)
+            {
+                foreach (var item in _model.ItemsInInventory)
+                {
+                    item.SetDimmed(true);
+                    _dimmedItems.Add(item);
+                }
+            }
+
+            preview.Item.ShowInventoryHighlight(_inventoryRoot, preview.Slot.anchoredPosition);
+            _highlightedItem = preview.Item;
+        }
+
+        private void HidePlacementPreview()
+        {
+            if (_highlightedItem != null)
+                _highlightedItem.HideInventoryHighlight();
+
+            foreach (var item in _dimmedItems)
+            {
+                if (item != null)
+                    item.SetDimmed(false);
+            }
+
+            _dimmedItems.Clear();
+            _highlightedItem = null;
+        }
+
         public void Dispose()
         {
+            HidePlacementPreview();
             _disposable.Dispose();
         }
     }

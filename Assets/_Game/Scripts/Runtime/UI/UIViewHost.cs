@@ -1,3 +1,4 @@
+using Game.Runtime.UI.DropPanels;
 using Game.Runtime.UI.Inventory;
 using System;
 using System.Collections.Generic;
@@ -7,43 +8,14 @@ using Zenject;
 
 namespace Game.Runtime.UI
 {
-    public class UIViewHost : MonoBehaviour, IDisposable
+    public class UIViewHost : MonoBehaviour
     {
         [SerializeField] private InventoryView _inventoryView;
+        [SerializeField] private SpawnPanel _spawnPanel; 
+        [SerializeField] private RectTransform _dragArea;
 
-        private List<object> _views = new();
-
-        [Inject]
-        private void Construct(DiContainer diContainer)
-        {
-            _views.Add(_inventoryView);
-
-            foreach (var view in _views)
-            {
-                diContainer.Inject(view);
-            }
-        }
-
-        public void InitializeViews()
-        {
-            foreach (var view in _views)
-            {
-                if (view is IInitializable initializable)
-                {
-                    initializable.Initialize();
-                }
-            }
-        }
-
-        public void Dispose()
-        {
-            foreach (var view in _views)
-            {
-                if (view is IDisposable disposable)
-                {
-                    disposable.Dispose();
-                }
-            }
-        }
+        public RectTransform DragArea => _dragArea;
+        public SpawnPanel SpawnPanel => _spawnPanel;
+        public InventoryView InventoryView => _inventoryView; 
     }
 }

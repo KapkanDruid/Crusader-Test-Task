@@ -11,6 +11,12 @@ namespace Game.CMS.Runtime
         public static class Configs
         {
             public const string InventoryConfig = "CMS/Configs/InventoryConfig";
+            public const string SpawnConfig = "CMS/Configs/SpawnConfig";
+        }
+        public static class Items
+        {
+            public const string Item1 = "CMS/Items/Item1";
+            public const string Item2 = "CMS/Items/Item2";
         }
     }
 }

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f2319fb035c477aa16ac903c16a9062, type: 3}
+  m_Name: SpawnConfig
+  m_EditorClassIdentifier: CMS.Runtime::Game.CMS.Runtime.CMSAsset
+  entityId: CMS/Configs/SpawnConfig
+  Components:
+  - rid: 1064589345942405206
+  references:
+    version: 2
+    RefIds:
+    - rid: 1064589345942405206
+      type: {class: ItemSpawnConfig, ns: Game.Runtime.Data.CMSComponents.Config, asm: Runtime}
+      data:
+        _spawnCount: 6

@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -60,10 +59,10 @@ namespace Game.Runtime.UI
 
         private void AddSpeedButton(float speed)
         {
-            var buttonObject = Object.Instantiate(_config.SpeedButtonPrefab, _buttonsGroup);
-            var button = buttonObject.GetComponent<Button>();
+            var buttonView = Object.Instantiate(_config.SpeedButtonPrefab, _buttonsGroup);
+            var button = buttonView.Button;
 
-            buttonObject.GetComponentInChildren<TMP_Text>().text = "x" + speed.ToString("0.##", CultureInfo.InvariantCulture);
+            buttonView.SetText("x" + speed.ToString("0.##", CultureInfo.InvariantCulture));
             button.interactable = !Mathf.Approximately(speed, _tickService.Speed);
 
             button.OnClickAsObservable()

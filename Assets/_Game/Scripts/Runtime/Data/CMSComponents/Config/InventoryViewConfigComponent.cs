@@ -1,4 +1,5 @@
 ﻿using Game.CMS.Runtime;
+using Game.Runtime.UI.Inventory;
 using System;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Game.Runtime.Data.CMSComponents.Config
         [SerializeField] private Color _greenTileColor;
         [SerializeField, Range(0, 500)] private int _cellSize;
         [SerializeField, Range(0, 500)] private float _cellImageSize;
+        [SerializeField] private InventoryCellView _cellPrefab;
 
         public Sprite CellSprite => _cellSprite;
         public Color RedTileColor => _redTileColor;
@@ -20,5 +22,6 @@ namespace Game.Runtime.Data.CMSComponents.Config
         public Color GreenTileColor => _greenTileColor;
         public int CellSize => _cellSize;
         public float CellImageSize => _cellImageSize;
+        public InventoryCellView CellPrefab => _cellPrefab;
     }
 }

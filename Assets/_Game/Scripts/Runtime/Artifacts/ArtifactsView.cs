@@ -27,7 +27,7 @@ namespace Game.Runtime.Artifacts
         [SerializeField] private TMP_Text _artifactName;
         [SerializeField] private TMP_Text _artifactDescription;
 
-        private readonly Dictionary<CMSEntity, GameObject> _costViews = new();
+        private readonly Dictionary<CMSEntity, ResourceGroupElement> _costViews = new();
         private readonly CompositeDisposable _disposable = new();
 
         private ArtifactsModel _model;
@@ -115,11 +115,10 @@ namespace Game.Runtime.Artifacts
 
         private void AddArtifact(CMSEntity artifact)
         {
-            var artifactObject = Object.Instantiate(_config.ArtifactViewPrefab, _artifactsGroup);
-            var image = artifactObject.GetComponent<Image>();
+            var image = Object.Instantiate(_config.ArtifactViewPrefab, _artifactsGroup);
             var component = artifact.GetComponent<ArtifactComponent>();
 
-            artifactObject.transform.localScale = Vector3.one * _config.ArtifactScale;
+            image.transform.localScale = Vector3.one * _config.ArtifactScale;
             image.sprite = component.Sprite;
             _popupService.Register(artifact, image.rectTransform);
 
@@ -134,17 +133,16 @@ namespace Game.Runtime.Artifacts
 
         private void AddCost(CMSEntity resource, int count)
         {
-            var resourceObject = Object.Instantiate(_resourcesViewConfig.ResourceViewPrefab, _costGroup);
-            resourceObject.transform.localScale = Vector3.one * _config.ResourceScale;
-            resourceObject.GetComponentInChildren<Image>().sprite = resource.GetComponent<ResourceComponent>().Sprite;
-            resourceObject.GetComponentInChildren<TMP_Text>().text = count.ToString();
-            _costViews.Add(resource, resourceObject);
+            var resourceView = Object.Instantiate(_resourcesViewConfig.ResourceViewPrefab, _costGroup);
+            resourceView.transform.localScale = Vector3.one * _config.ResourceScale;
+            resourceView.Setup(resource.GetComponent<ResourceComponent>().Sprite, count);
+            _costViews.Add(resource, resourceView);
         }
 
         private void ChangeCost(CMSEntity resource, int count)
         {
             if (_costViews.TryGetValue(resource, out var costView))
-                costView.GetComponentInChildren<TMP_Text>().text = count.ToString();
+                costView.SetCount(count);
 
             UpdatePurchaseButton();
         }

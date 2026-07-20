@@ -4,10 +4,8 @@ using Game.Runtime.Data.CMSComponents.Config;
 using Game.Runtime.Data.CMSComponents.Resources;
 using Game.Runtime.UI;
 using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Pool;
-using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
 namespace Game.Runtime.Resources
@@ -17,7 +15,7 @@ namespace Game.Runtime.Resources
         private readonly UIViewHost _viewHost;
 
         private ResourcesViewConfigComponent _viewConfig;
-        private ObjectPool<GameObject> _popupPool;
+        private ObjectPool<ResourceGroupElement> _popupPool;
         private Camera _camera;
 
         public ResourcePopupService(UIViewHost viewHost)
@@ -36,14 +34,14 @@ namespace Game.Runtime.Resources
                 : _viewHost.Canvas.worldCamera;
 
             _viewHost.ResourcePopupRoot.SetAsLastSibling();
-            _popupPool = new ObjectPool<GameObject>(CreatePopup, ShowPopup, HidePopup, DestroyPopup);
+            _popupPool = new ObjectPool<ResourceGroupElement>(CreatePopup, ShowPopup, HidePopup, DestroyPopup);
         }
 
         public void Show(RectTransform point, CMSEntity resource, int count)
         {
             var popup = _popupPool.Get();
-            var popupTransform = popup.GetComponent<RectTransform>();
-            var canvasGroup = popup.GetComponent<CanvasGroup>();
+            var popupTransform = popup.RectTransform;
+            var canvasGroup = popup.CanvasGroup;
 
             var screenPoint = RectTransformUtility.WorldToScreenPoint(_camera, point.position);
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -53,8 +51,7 @@ namespace Game.Runtime.Resources
                 out var localPoint);
 
             popupTransform.anchoredPosition = localPoint;
-            popup.GetComponent<Image>().sprite = resource.GetComponent<ResourceComponent>().Sprite;
-            popup.GetComponentInChildren<TMP_Text>().text = count.ToString();
+            popup.Setup(resource.GetComponent<ResourceComponent>().Sprite, count);
 
             DOTween.Sequence(popup)
                 .Append(popupTransform.DOAnchorPos(localPoint + _viewConfig.ResourcePopupOffset,
@@ -63,41 +60,38 @@ namespace Game.Runtime.Resources
                 .OnComplete(() => _popupPool.Release(popup));
         }
 
-        private GameObject CreatePopup()
+        private ResourceGroupElement CreatePopup()
         {
             var popup = Object.Instantiate(_viewConfig.ResourceViewPrefab, _viewHost.ResourcePopupRoot);
-            var popupTransform = popup.GetComponent<RectTransform>();
+            var popupTransform = popup.RectTransform;
 
             popup.name = "ResourcePopup";
             popupTransform.anchorMin = _viewHost.ResourcePopupRoot.pivot;
             popupTransform.anchorMax = _viewHost.ResourcePopupRoot.pivot;
             popupTransform.localScale = Vector3.one * _viewConfig.ResourceScale;
-            popup.AddComponent<CanvasGroup>();
-
-            foreach (var graphic in popup.GetComponentsInChildren<Graphic>(true))
-            {
-                graphic.raycastTarget = false;
-            }
 
             return popup;
         }
 
-        private void ShowPopup(GameObject popup)
+        private void ShowPopup(ResourceGroupElement popup)
         {
             DOTween.Kill(popup);
-            popup.GetComponent<CanvasGroup>().alpha = 1f;
-            popup.SetActive(true);
+            popup.CanvasGroup.alpha = 1f;
+            popup.gameObject.SetActive(true);
         }
 
-        private void HidePopup(GameObject popup)
+        private void HidePopup(ResourceGroupElement popup)
         {
-            popup.SetActive(false);
+            popup.gameObject.SetActive(false);
         }
 
-        private void DestroyPopup(GameObject popup)
+        private void DestroyPopup(ResourceGroupElement popup)
         {
+            if (popup == null)
+                return;
+
             DOTween.Kill(popup);
-            Object.Destroy(popup);
+            Object.Destroy(popup.gameObject);
         }
 
         public void Dispose()

@@ -106,7 +106,7 @@ MonoBehaviour:
           - {x: 4, y: 2}
           - {x: 4, y: 3}
           - {x: 4, y: 4}
-          gridSize: {x: 8, y: 8}
+          gridSize: {x: 11, y: 11}
     - rid: 1064589315204710616
       type: {class: InventoryViewConfigComponent, ns: Game.Runtime.Data.CMSComponents.Config, asm: Runtime}
       data:
@@ -116,6 +116,7 @@ MonoBehaviour:
         _greenTileColor: {r: 0.5310609, g: 0.9622642, b: 0.5310609, a: 1}
         _cellSize: 150
         _cellImageSize: 130
+        _cellPrefab: {fileID: 2388377839138364553, guid: 5db5c5eed1163fb43a7f1cb96438bd09, type: 3}
     - rid: 1064589396514439265
       type: {class: InventoryTileGeneratorConfigComponent, ns: Game.Runtime.Data.CMSComponents.Config, asm: Runtime}
       data:

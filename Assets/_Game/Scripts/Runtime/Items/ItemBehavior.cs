@@ -1,10 +1,12 @@
 ﻿using Game.CMS.Runtime;
 using Game.Runtime.Data.CMSComponents.Config;
+using Game.Runtime.Data.CMSComponents.Item;
 using Game.Runtime.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 namespace Game.Runtime.Items
@@ -13,7 +15,13 @@ namespace Game.Runtime.Items
     {
         [SerializeField] private RectTransform _itemRoot;
         [SerializeField] private RectTransform _triggerRoot;
+        [SerializeField] private Image _parentTrigger;
         [SerializeField] private RectTransform _viewRoot;
+        [SerializeField] private CanvasGroup _viewCanvasGroup;
+        [SerializeField] private RectTransform _highlightRoot;
+        [SerializeField] private CanvasGroup _highlightCanvasGroup;
+        [SerializeField] private ItemCellView _cellPrefab;
+        [SerializeField] private ItemTriggerCellView _triggerCellPrefab;
 
         private Vector2Int _productionTilePosition;
         private RectTransform _dragArea;
@@ -60,8 +68,13 @@ namespace Game.Runtime.Items
         {
             public override ItemBehavior Create(CMSEntity dataEntity, RectTransform dragArea)
             {
+                if (!dataEntity.Is<GridCMSComponent>())
+                    throw new ArgumentException($"{dataEntity.EntityId} does not contain {nameof(GridCMSComponent)}");
+
+                if (!dataEntity.Is<ItemViewComponent>())
+                    throw new ArgumentException($"{dataEntity.EntityId} does not contain {nameof(ItemViewComponent)}");
+
                 var item = base.Create(dataEntity, dragArea);
-                //TODO: Validate dataEntity for necessary components 
                 item.SetupItem();
                 return item;
             }
@@ -80,11 +93,17 @@ namespace Game.Runtime.Items
         public void SetupItem()
         {
             SetupTransform();
-            _itemTriggerHandler.SetupTrigger(_triggerRoot);
+            _itemTriggerHandler.SetupTrigger(_triggerRoot, _parentTrigger, _triggerCellPrefab);
             _itemDragHandler.Setup(_dragArea, _itemRoot);
             _initialSlotPositions.AddRange(ItemDataEntity.GetComponent<GridCMSComponent>().GridPattern);
             _productionTilePosition = _initialSlotPositions.GetRandom();
-            _itemView.Setup(_viewRoot, _itemRoot, _productionTilePosition);
+            _itemView.Setup(_viewRoot,
+                            _viewCanvasGroup,
+                            _highlightRoot,
+                            _highlightCanvasGroup,
+                            _itemRoot,
+                            _cellPrefab,
+                            _productionTilePosition);
 
             _itemDragHandler.IsDraggable = true;
         }

@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2681346088891239509}
+  - component: {fileID: 3638383227928055001}
+  - component: {fileID: 1507897173981418801}
   m_Layer: 5
   m_Name: TriggerRoot
   m_TagString: Untagged
@@ -35,6 +37,44 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &3638383227928055001
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 614533059253187436}
+  m_CullTransparentMesh: 1
+--- !u!114 &1507897173981418801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 614533059253187436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &1017657830143114907
 GameObject:
   m_ObjectHideFlags: 0
@@ -44,6 +84,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 666565112854094953}
+  - component: {fileID: 4512442391987386529}
   m_Layer: 5
   m_Name: ViewRoot
   m_TagString: Untagged
@@ -70,6 +111,66 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &4512442391987386529
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1017657830143114907}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!1 &6292982133525243167
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6608424964898968292}
+  - component: {fileID: 7152880391133310395}
+  m_Layer: 5
+  m_Name: HighlightRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &6608424964898968292
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6292982133525243167}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5322997366484958661}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &7152880391133310395
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6292982133525243167}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &8490652700824925011
 GameObject:
   m_ObjectHideFlags: 0
@@ -103,6 +204,7 @@ RectTransform:
   m_Children:
   - {fileID: 666565112854094953}
   - {fileID: 2681346088891239509}
+  - {fileID: 6608424964898968292}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -155,4 +257,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Runtime::Game.Runtime.Items.ItemBehavior
   _itemRoot: {fileID: 5322997366484958661}
   _triggerRoot: {fileID: 2681346088891239509}
+  _parentTrigger: {fileID: 1507897173981418801}
   _viewRoot: {fileID: 666565112854094953}
+  _viewCanvasGroup: {fileID: 4512442391987386529}
+  _highlightRoot: {fileID: 6608424964898968292}
+  _highlightCanvasGroup: {fileID: 7152880391133310395}
+  _cellPrefab: {fileID: 1593561944353393235, guid: 21a9cefae51b4df43aa2cb746f5968f9, type: 3}
+  _triggerCellPrefab: {fileID: 3874552349817382166, guid: e588e5eb42a2aaf44b69b0e6450b82df, type: 3}

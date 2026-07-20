@@ -5,9 +5,7 @@ using ObservableCollections;
 using R3;
 using System;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using Zenject;
 using Object = UnityEngine.Object;
 
@@ -21,7 +19,7 @@ namespace Game.Runtime.Resources
         private ResourcesModel _model;
         private ResourcesViewConfigComponent _viewConfig;
 
-        private readonly Dictionary<CMSEntity, (Image image, TMP_Text textComponent)> _resources = new();
+        private readonly Dictionary<CMSEntity, ResourceGroupElement> _resources = new();
         private readonly CompositeDisposable _disposable = new();
 
         [Inject]
@@ -54,15 +52,10 @@ namespace Game.Runtime.Resources
 
         private void AddResource(CMSEntity entity, int count)
         {
-            var resourceObject = Object.Instantiate(_viewConfig.ResourceViewPrefab, _resourcesGroup);
-            resourceObject.transform.localScale = Vector3.one * _viewConfig.ResourceScale;
-
-            var resourceImage = resourceObject.GetComponentInChildren<Image>();
-            resourceImage.sprite = entity.GetComponent<ResourceComponent>().Sprite;
-            
-            var resourceText = resourceObject.GetComponentInChildren<TMP_Text>();
-            resourceText.text = count.ToString();
-            _resources.Add(entity, (resourceImage, resourceText));
+            var resourceView = Object.Instantiate(_viewConfig.ResourceViewPrefab, _resourcesGroup);
+            resourceView.transform.localScale = Vector3.one * _viewConfig.ResourceScale;
+            resourceView.Setup(entity.GetComponent<ResourceComponent>().Sprite, count);
+            _resources.Add(entity, resourceView);
         }
 
         private void RemoveResource(CMSEntity entity)
@@ -71,7 +64,7 @@ namespace Game.Runtime.Resources
                 return;
 
             _resources.Remove(entity);
-            Object.Destroy(resourceView.image.gameObject);
+            Object.Destroy(resourceView.gameObject);
         }
 
         private void ChangeCount(CMSEntity entity, int count)
@@ -80,7 +73,7 @@ namespace Game.Runtime.Resources
                 return;
 
             if (_resources.TryGetValue(entity, out var value))
-                value.textComponent.text = count.ToString();
+                value.SetCount(count);
         }
 
         public void Dispose()

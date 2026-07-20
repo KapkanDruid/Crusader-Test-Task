@@ -28,33 +28,21 @@ namespace Game.Runtime.Items
             _dataEntity = dataEntity;
         }
 
-        public void SetupTrigger(RectTransform triggerRoot)
+        public void SetupTrigger(RectTransform triggerRoot, Image parentTrigger, ItemTriggerCellView triggerCellPrefab)
         {
             var grid = _dataEntity.GetComponent<GridCMSComponent>();
             var itemViewConfig = _dataEntity.GetComponent<ItemViewComponent>();
 
             _triggerRoot = triggerRoot;
-            _parentTrigger = _triggerRoot.gameObject.AddComponent<Image>();
+            _parentTrigger = parentTrigger;
             _parentTrigger.raycastTarget = false;
             _parentTrigger.SetAlpha(0);
 
             foreach (var position in grid.GridPattern)
             {
-                AddTrigger(position, itemViewConfig);
+                var trigger = Object.Instantiate(triggerCellPrefab, _triggerRoot);
+                trigger.Setup(position, itemViewConfig.CellSize);
             }
-        }
-
-        private void AddTrigger(Vector2Int gridPosition, ItemViewComponent itemViewConfig)
-        {
-            var cellObject = new GameObject($"InventoryCell {gridPosition}", typeof(Image));
-            var trigger = cellObject.GetComponent<Image>();
-            trigger.SetAlpha(0);
-            trigger.rectTransform.SetParent(_triggerRoot);
-            trigger.rectTransform.SetAsFirstSibling();
-            trigger.rectTransform.localPosition = Vector3.zero;
-            trigger.rectTransform.localScale = Vector3.one;
-            trigger.rectTransform.sizeDelta = Vector2.one * itemViewConfig.CellSize;
-            trigger.rectTransform.anchoredPosition = gridPosition * itemViewConfig.CellSize;
         }
     }
 }

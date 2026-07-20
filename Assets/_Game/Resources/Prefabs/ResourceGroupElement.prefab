@@ -60,7 +60,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -163,6 +163,8 @@ GameObject:
   - component: {fileID: 2564474942131832548}
   - component: {fileID: 358401992708859307}
   - component: {fileID: 3743974609356585518}
+  - component: {fileID: 2932163451524983697}
+  - component: {fileID: 289819813664045241}
   m_Layer: 5
   m_Name: ResourceGroupElement
   m_TagString: Untagged
@@ -212,7 +214,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -228,3 +230,31 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &2932163451524983697
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5576611979014645380}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &289819813664045241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5576611979014645380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c87866bb126f4af489957c9b6015df44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Runtime::Game.Runtime.Resources.ResourceGroupElement
+  _rectTransform: {fileID: 2564474942131832548}
+  _image: {fileID: 3743974609356585518}
+  _countText: {fileID: 7365827041233280260}
+  _canvasGroup: {fileID: 2932163451524983697}

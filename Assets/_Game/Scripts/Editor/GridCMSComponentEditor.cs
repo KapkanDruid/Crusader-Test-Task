@@ -29,6 +29,8 @@ namespace Game.Editor
             public int MaxX;
             public int MaxY;
             public bool SizeModifiedForced;
+            public bool SavedPatternExpanded;
+            public bool LocalPatternExpanded;
             public float LastWidth = 300f;
         }
 
@@ -84,7 +86,13 @@ namespace Game.Editor
 
             if (savedPattern.Count > 0)
             {
-                DrawPatternText(position, ref y, "Saved pattern", savedPattern, Color.white);
+                DrawPatternText(
+                    position,
+                    ref y,
+                    "Saved pattern",
+                    savedPattern,
+                    Color.white,
+                    ref state.SavedPatternExpanded);
             }
 
             y += 4f;
@@ -92,7 +100,13 @@ namespace Game.Editor
             if (state.LocalGridPattern.Count > 0)
             {
                 Color localColor = changesSaved ? Color.green : Color.yellow;
-                DrawPatternText(position, ref y, "Local pattern", state.LocalGridPattern, localColor);
+                DrawPatternText(
+                    position,
+                    ref y,
+                    "Local pattern",
+                    state.LocalGridPattern,
+                    localColor,
+                    ref state.LocalPatternExpanded);
             }
 
             y += SectionSpacing;
@@ -133,12 +147,15 @@ namespace Game.Editor
             height += SectionSpacing;
 
             if (savedPattern.Count > 0)
-                height += GetPatternTextHeight(savedPattern, availableWidth);
+                height += GetPatternTextHeight(savedPattern, availableWidth, state.SavedPatternExpanded);
 
             height += 4f;
 
             if (state.LocalGridPattern.Count > 0)
-                height += GetPatternTextHeight(state.LocalGridPattern, availableWidth);
+                height += GetPatternTextHeight(
+                    state.LocalGridPattern,
+                    availableWidth,
+                    state.LocalPatternExpanded);
 
             height += SectionSpacing;
 
@@ -268,16 +285,22 @@ namespace Game.Editor
             ref float y,
             string title,
             IEnumerable<Vector2Int> pattern,
-            Color color)
+            Color color,
+            ref bool expanded)
         {
             List<Vector2Int> positions = pattern.ToList();
-            GUIStyle titleStyle = CreateTextStyle(14, color);
+            GUIStyle titleStyle = CreateFoldoutStyle(14, color);
             GUIStyle positionsStyle = CreateTextStyle(12, color);
 
-            EditorGUI.LabelField(
+            expanded = EditorGUI.Foldout(
                 TakeRect(position, ref y, LineHeight),
+                expanded,
                 $"{title}: {positions.Count} positions",
+                true,
                 titleStyle);
+
+            if (!expanded)
+                return;
 
             string positionsText = string.Join(" ", positions);
             float textHeight = Mathf.Max(LineHeight, positionsStyle.CalcHeight(
@@ -339,8 +362,14 @@ namespace Game.Editor
             return savedPattern.All(localSet.Contains);
         }
 
-        private static float GetPatternTextHeight(IEnumerable<Vector2Int> pattern, float width)
+        private static float GetPatternTextHeight(
+            IEnumerable<Vector2Int> pattern,
+            float width,
+            bool expanded)
         {
+            if (!expanded)
+                return LineHeight + VerticalSpacing;
+
             List<Vector2Int> positions = pattern.ToList();
             GUIStyle positionsStyle = CreateTextStyle(12, Color.white);
             float positionsHeight = Mathf.Max(LineHeight, positionsStyle.CalcHeight(
@@ -357,6 +386,17 @@ namespace Game.Editor
                 wordWrap = true
             };
             style.normal.textColor = color;
+            return style;
+        }
+
+        private static GUIStyle CreateFoldoutStyle(int fontSize, Color color)
+        {
+            var style = new GUIStyle(EditorStyles.foldout)
+            {
+                fontSize = fontSize
+            };
+            style.normal.textColor = color;
+            style.onNormal.textColor = color;
             return style;
         }
 

@@ -1,4 +1,5 @@
 using Game.CMS.Runtime;
+using Game.Runtime.UI;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,9 +10,9 @@ namespace Game.Runtime.Data.CMSComponents.Config
     public class SpeedButtonsViewConfigComponent : CMSComponent
     {
         [SerializeField] private List<float> _speedValues = new();
-        [SerializeField] private GameObject _speedButtonPrefab;
+        [SerializeField] private SpeedButtonView _speedButtonPrefab;
 
         public IReadOnlyList<float> SpeedValues => _speedValues;
-        public GameObject SpeedButtonPrefab => _speedButtonPrefab;
+        public SpeedButtonView SpeedButtonPrefab => _speedButtonPrefab;
     }
 }

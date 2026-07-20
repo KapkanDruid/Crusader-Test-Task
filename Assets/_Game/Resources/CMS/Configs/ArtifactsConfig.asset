@@ -29,6 +29,6 @@ MonoBehaviour:
         - _resource: {fileID: 11400000, guid: f45b14c25b8c4fa418c8da888981ff5e, type: 2}
           _count: 1
         _costIncrease: 0.2
-        _artifactViewPrefab: {fileID: 877795217286206296, guid: 32ab6735cc53d4441bac781f7fa1a5fd, type: 3}
+        _artifactViewPrefab: {fileID: 9049410726239180124, guid: 32ab6735cc53d4441bac781f7fa1a5fd, type: 3}
         _artifactScale: 1
         _resourceScale: 0.42

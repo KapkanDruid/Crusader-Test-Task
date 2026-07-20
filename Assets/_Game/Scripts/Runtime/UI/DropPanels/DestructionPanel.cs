@@ -6,7 +6,6 @@ using Game.Runtime.Items;
 using Game.Runtime.Resources;
 using Game.Runtime.Utils;
 using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -53,12 +52,11 @@ namespace Game.Runtime.UI.DropPanels
 
         private void AddResourceCost(ResourceCost resourceCost)
         {
-            var resourceObject = Object.Instantiate(_resourcesViewConfig.ResourceViewPrefab, _costGroup);
-            resourceObject.transform.localScale = Vector3.one * _config.ResourceScale;
+            var resourceView = Object.Instantiate(_resourcesViewConfig.ResourceViewPrefab, _costGroup);
+            resourceView.transform.localScale = Vector3.one * _config.ResourceScale;
 
             var resource = resourceCost.Resource.AsEntity();
-            resourceObject.GetComponentInChildren<Image>().sprite = resource.GetComponent<ResourceComponent>().Sprite;
-            resourceObject.GetComponentInChildren<TMP_Text>().text = resourceCost.Count.ToString();
+            resourceView.Setup(resource.GetComponent<ResourceComponent>().Sprite, resourceCost.Count);
         }
 
         bool IItemHolder.TryPlaceItem(ItemBehavior item)

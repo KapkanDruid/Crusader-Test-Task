@@ -5,9 +5,7 @@ using ObservableCollections;
 using R3;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 using Zenject;
 using Object = UnityEngine.Object;
 
@@ -23,8 +21,7 @@ namespace Game.Runtime.UI.Inventory
 
         private InventoryViewConfigComponent _config;
         private readonly CompositeDisposable _disposable = new();
-        private readonly Dictionary<Vector2Int, RectTransform> _cells = new();
-        private readonly Dictionary<Vector2Int, Image> _cellImages = new();
+        private readonly Dictionary<Vector2Int, InventoryCellView> _cells = new();
         private readonly HashSet<ItemBehavior> _dimmedItems = new();
         private ItemBehavior _highlightedItem;
 
@@ -63,31 +60,11 @@ namespace Game.Runtime.UI.Inventory
 
         private void AddCell(Vector2Int gridPosition)
         {
-            var cellObject = new GameObject($"InventoryCell {gridPosition}", typeof(RectTransform));
-            var cell = cellObject.GetComponent<RectTransform>();
+            var cell = Object.Instantiate(_config.CellPrefab, _inventoryRoot);
+            cell.Setup(gridPosition, _config);
 
-            cell.SetParent(_inventoryRoot);
-            cell.SetAsFirstSibling();
-            cell.localPosition = Vector3.zero;
-            cell.localScale = Vector3.one;
-            cell.sizeDelta = Vector2.one * _config.CellSize;
-            cell.anchoredPosition = gridPosition * _config.CellSize;
-
-            var imageObject = new GameObject($"InventoryCellImage {gridPosition}", typeof(Image));
-            var image = imageObject.GetComponent<Image>();
-
-            image.rectTransform.SetParent(cell);
-            image.rectTransform.localPosition = Vector3.zero;
-            image.rectTransform.localScale = Vector3.one;
-            image.rectTransform.anchoredPosition = Vector3.zero;
-
-            image.sprite = _config.CellSprite;
-            image.rectTransform.sizeDelta = Vector2.one * _config.CellImageSize;
-            image.raycastTarget = false;
-
-            _commands.SetCell(gridPosition, cell);
+            _commands.SetCell(gridPosition, cell.RectTransform);
             _cells[gridPosition] = cell;
-            _cellImages[gridPosition] = image;
         }
 
         private void RemoveCel(Vector2Int gridPosition)
@@ -95,18 +72,11 @@ namespace Game.Runtime.UI.Inventory
             _commands.RemoveCell(gridPosition);
             Object.Destroy(_cells[gridPosition].gameObject);
             _cells.Remove(gridPosition);
-            _cellImages.Remove(gridPosition);
         }
 
         private void SetCellType(Vector2Int gridPosition, InventoryTileType tileType)
         {
-            _cellImages[gridPosition].color = tileType switch
-            {
-                InventoryTileType.Red => _config.RedTileColor,
-                InventoryTileType.Yellow => _config.YellowTileColor,
-                InventoryTileType.Green => _config.GreenTileColor,
-                _ => throw new ArgumentOutOfRangeException(nameof(tileType), tileType, null),
-            };
+            _cells[gridPosition].SetType(tileType, _config);
         }
 
         private void HandlePlacementPreview((ItemBehavior Item, RectTransform Slot, ItemRotation Rotation) preview)
@@ -140,8 +110,7 @@ namespace Game.Runtime.UI.Inventory
 
             foreach (var item in _dimmedItems)
             {
-                if (item != null)
-                    item.SetDimmed(false);
+                item.SetDimmed(false);
             }
 
             _dimmedItems.Clear();

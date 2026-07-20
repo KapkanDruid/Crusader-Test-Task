@@ -1,4 +1,6 @@
 ﻿using Game.CMS.Runtime;
+using Game.Runtime.Artifacts;
+using Game.Runtime.Artifacts.Handlers;
 using Game.Runtime.DragAndDrop;
 using Game.Runtime.Input;
 using Game.Runtime.Items;
@@ -28,6 +30,8 @@ namespace Game.Runtime.Bootstrap
             InstallServices();
             InstallResources();
             InstallTicks();
+            InstallSpeedButtons();
+            InstallArtifacts();
         }
 
         private void InstallBootstrap()
@@ -118,6 +122,48 @@ namespace Game.Runtime.Bootstrap
         {
             Container.BindInterfacesAndSelfTo<TickService>()
                 .AsSingle();
+        }
+
+        private void InstallSpeedButtons()
+        {
+            Container.BindInterfacesAndSelfTo<SpeedButtonsView>()
+                .FromInstance(_viewHost.SpeedButtonsView)
+                .AsSingle();
+
+            Container.QueueForInject(_viewHost.SpeedButtonsView);
+        }
+
+        private void InstallArtifacts()
+        {
+            Container.Bind<ArtifactsModel>()
+                .AsSingle();
+
+            Container.Bind<ArtifactPopupService>()
+                .AsSingle();
+
+            Container.BindInterfacesAndSelfTo<ProductionPerCellArtifactHandler>()
+                .AsSingle();
+
+            Container.BindInterfacesAndSelfTo<MultiplierArtifactHandler>()
+                .AsSingle();
+
+            Container.BindInterfacesAndSelfTo<AdditionalResourceArtifactHandler>()
+                .AsSingle();
+
+            Container.BindInterfacesAndSelfTo<SmallestResourceChanceArtifactHandler>()
+                .AsSingle();
+
+            Container.BindInterfacesAndSelfTo<DestroyProducerChanceArtifactHandler>()
+                .AsSingle();
+
+            Container.BindInterfacesAndSelfTo<RandomResourceArtifactHandler>()
+                .AsSingle();
+
+            Container.BindInterfacesAndSelfTo<ArtifactsView>()
+                .FromInstance(_viewHost.ArtifactsView)
+                .AsSingle();
+
+            Container.QueueForInject(_viewHost.ArtifactsView);
         }
     }
 }

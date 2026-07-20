@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f2319fb035c477aa16ac903c16a9062, type: 3}
+  m_Name: ArtifactsConfig
+  m_EditorClassIdentifier: CMS.Runtime::Game.CMS.Runtime.CMSAsset
+  entityId: CMS/Configs/ArtifactsConfig
+  Components:
+  - rid: 1064589403317600353
+  references:
+    version: 2
+    RefIds:
+    - rid: 1064589403317600353
+      type: {class: ArtifactsConfigComponent, ns: Game.Runtime.Data.CMSComponents.Config, asm: Runtime}
+      data:
+        _startCost:
+        - _resource: {fileID: 11400000, guid: ee18d5fba2ae9d443ac3a270a65e16ff, type: 2}
+          _count: 1
+        - _resource: {fileID: 11400000, guid: 938b9dbd551a9354996afe4a9a6c21b9, type: 2}
+          _count: 1
+        - _resource: {fileID: 11400000, guid: f45b14c25b8c4fa418c8da888981ff5e, type: 2}
+          _count: 1
+        _costIncrease: 0.2
+        _artifactViewPrefab: {fileID: 877795217286206296, guid: 32ab6735cc53d4441bac781f7fa1a5fd, type: 3}
+        _artifactScale: 1
+        _resourceScale: 0.42

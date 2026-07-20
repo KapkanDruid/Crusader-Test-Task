@@ -23,7 +23,8 @@ namespace Game.Runtime.UI.DropPanels
         private ItemSpawnPanelConfig _config;
         private UIViewHost _viewHost;
         private Color _defaultColor;
-        private HashSet<ItemBehavior> _storedItems = new();
+        private readonly HashSet<ItemBehavior> _storedItems = new();
+        private readonly List<Vector2> _spawnPoints = new();
 
         [Inject]
         private void Construct(ItemBehavior.Factory itemFactory, UIViewHost viewHost)
@@ -37,13 +38,14 @@ namespace Game.Runtime.UI.DropPanels
             _defaultColor = _panelImage.color;
 
             _config = CMSContainer.Get(CMSPath.Configs.SpawnConfig).GetComponent<ItemSpawnPanelConfig>();
+            _spawnPoints.Clear();
+            _spawnPoints.AddRange(RectPointGenerator.Generate(_spawnArea, _config.SpawnCount));
             var itemDataList = CMSContainer.GetAll<IsStartItemComponent>();
             itemDataList.Shuffle();
 
             var itemDataQueue = new Queue<CMSEntity>(itemDataList);
-            var points = RectPointGenerator.Generate(_spawnArea, _config.SpawnCount);
 
-            foreach (var point in points)
+            foreach (var point in _spawnPoints)
             {
                 var item = _itemFactory.Create(itemDataQueue.CycledDequeue(), _viewHost.DragArea);
                 item.ItemRoot.SetParent(_dropPanel);
@@ -57,6 +59,8 @@ namespace Game.Runtime.UI.DropPanels
             var itemDataList = CMSContainer.GetAll<IsStartItemComponent>();
             var item = _itemFactory.Create(itemDataList.GetRandom(), _viewHost.DragArea);
             _storedItems.Add(item);
+            item.ItemRoot.SetParent(_dropPanel);
+            item.ItemRoot.anchoredPosition = _spawnPoints.GetRandom();
         }
 
         public void ReturnItems(IReadOnlyList<ItemBehavior> items)

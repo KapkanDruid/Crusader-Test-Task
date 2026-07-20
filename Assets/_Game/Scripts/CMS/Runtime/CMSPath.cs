@@ -8,12 +8,22 @@ namespace Game.CMS.Runtime
 {
     public static class CMSPath
     {
+        public static class Artifacts
+        {
+            public const string ForestArtifact = "CMS/Artifacts/ForestArtifact";
+            public const string IronArtifact = "CMS/Artifacts/IronArtifact";
+            public const string RandomResourceArtifact = "CMS/Artifacts/RandomResourceArtifact";
+            public const string SmallestResourceArtifact = "CMS/Artifacts/SmallestResourceArtifact";
+            public const string WheatArtifact = "CMS/Artifacts/WheatArtifact";
+        }
         public static class Configs
         {
+            public const string ArtifactsConfig = "CMS/Configs/ArtifactsConfig";
             public const string DestructionPanelConfig = "CMS/Configs/DestructionPanelConfig";
             public const string InventoryConfig = "CMS/Configs/InventoryConfig";
             public const string ResourcesConfig = "CMS/Configs/ResourcesConfig";
             public const string SpawnConfig = "CMS/Configs/SpawnConfig";
+            public const string SpeedButtonsConfig = "CMS/Configs/SpeedButtonsConfig";
         }
         public static class Items
         {

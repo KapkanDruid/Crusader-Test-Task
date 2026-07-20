@@ -51,6 +51,15 @@ namespace Game.Runtime.UI.Inventory
             return _tileTypes[gridPosition];
         }
 
+        public void DestroyItem(ItemBehavior item, bool spawnReplacement)
+        {
+            RemoveFromInventory(item);
+            UnityEngine.Object.Destroy(item.gameObject);
+
+            if (spawnReplacement)
+                _spawnPanel.SpawnItem();
+        }
+
         private void GenerateTileTypes()
         {
             var gridPositions = _gridPositions.ToList();

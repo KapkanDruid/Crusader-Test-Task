@@ -1092,6 +1092,15 @@ namespace Game.Runtime.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SetSpeed"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""acda3b58-649b-4173-9f12-ccf76f487329"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1103,6 +1112,50 @@ namespace Game.Runtime.Input
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""RotateItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8497f0c5-5daa-472c-ba13-e2478b4d70e7"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=0)"",
+                    ""groups"": """",
+                    ""action"": ""SetSpeed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""13da3557-c2ec-4dc0-94c5-02d571b6b2d3"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale"",
+                    ""groups"": """",
+                    ""action"": ""SetSpeed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""657997cd-a690-4b97-aead-a3d761dfea9b"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=2)"",
+                    ""groups"": """",
+                    ""action"": ""SetSpeed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d417dd9e-79e2-479f-8a6e-b0afcc50c9b6"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=3)"",
+                    ""groups"": """",
+                    ""action"": ""SetSpeed"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1198,6 +1251,7 @@ namespace Game.Runtime.Input
             // Inventory
             m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
             m_Inventory_RotateItem = m_Inventory.FindAction("RotateItem", throwIfNotFound: true);
+            m_Inventory_SetSpeed = m_Inventory.FindAction("SetSpeed", throwIfNotFound: true);
         }
 
         ~@InputSystemActions()
@@ -1660,6 +1714,7 @@ namespace Game.Runtime.Input
         private readonly InputActionMap m_Inventory;
         private List<IInventoryActions> m_InventoryActionsCallbackInterfaces = new List<IInventoryActions>();
         private readonly InputAction m_Inventory_RotateItem;
+        private readonly InputAction m_Inventory_SetSpeed;
         /// <summary>
         /// Provides access to input actions defined in input action map "Inventory".
         /// </summary>
@@ -1675,6 +1730,10 @@ namespace Game.Runtime.Input
             /// Provides access to the underlying input action "Inventory/RotateItem".
             /// </summary>
             public InputAction @RotateItem => m_Wrapper.m_Inventory_RotateItem;
+            /// <summary>
+            /// Provides access to the underlying input action "Inventory/SetSpeed".
+            /// </summary>
+            public InputAction @SetSpeed => m_Wrapper.m_Inventory_SetSpeed;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -1704,6 +1763,9 @@ namespace Game.Runtime.Input
                 @RotateItem.started += instance.OnRotateItem;
                 @RotateItem.performed += instance.OnRotateItem;
                 @RotateItem.canceled += instance.OnRotateItem;
+                @SetSpeed.started += instance.OnSetSpeed;
+                @SetSpeed.performed += instance.OnSetSpeed;
+                @SetSpeed.canceled += instance.OnSetSpeed;
             }
 
             /// <summary>
@@ -1718,6 +1780,9 @@ namespace Game.Runtime.Input
                 @RotateItem.started -= instance.OnRotateItem;
                 @RotateItem.performed -= instance.OnRotateItem;
                 @RotateItem.canceled -= instance.OnRotateItem;
+                @SetSpeed.started -= instance.OnSetSpeed;
+                @SetSpeed.performed -= instance.OnSetSpeed;
+                @SetSpeed.canceled -= instance.OnSetSpeed;
             }
 
             /// <summary>
@@ -1979,6 +2044,13 @@ namespace Game.Runtime.Input
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnRotateItem(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "SetSpeed" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnSetSpeed(InputAction.CallbackContext context);
         }
     }
 }

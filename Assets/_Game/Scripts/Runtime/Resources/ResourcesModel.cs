@@ -36,6 +36,11 @@ namespace Game.Runtime.Resources
             return _resources.TryGetValue(entity, out int currentCount) && currentCount >= count;
         }
 
+        public int GetResourceCount(CMSEntity entity)
+        {
+            return _resources.TryGetValue(entity, out int count) ? count : 0;
+        }
+
         public void RemoveResource(CMSEntity entity, int count)
         {
             ValidateOperation(entity, count);

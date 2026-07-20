@@ -1,4 +1,5 @@
 using Game.CMS.Runtime;
+using Game.Runtime.Artifacts;
 using Game.Runtime.Data.CMSComponents.Config;
 using Game.Runtime.Data.CMSComponents.Item;
 using Game.Runtime.Items;
@@ -24,6 +25,7 @@ namespace Game.Runtime.Resources
         private readonly TickService _tickService;
         private readonly InventoryModel _inventoryModel;
         private readonly ResourcesModel _resourcesModel;
+        private readonly ArtifactsModel _artifactsModel;
         private readonly Dictionary<ItemBehavior, ProductionState> _items = new();
         private readonly List<ProductionState> _tickBuffer = new();
         private readonly CompositeDisposable _disposable = new();
@@ -32,11 +34,13 @@ namespace Game.Runtime.Resources
 
         public ResourceProductionHandler(TickService tickService,
                                          InventoryModel inventoryModel,
-                                         ResourcesModel resourcesModel)
+                                         ResourcesModel resourcesModel,
+                                         ArtifactsModel artifactsModel)
         {
             _tickService = tickService;
             _inventoryModel = inventoryModel;
             _resourcesModel = resourcesModel;
+            _artifactsModel = artifactsModel;
         }
 
         public void Setup()
@@ -130,10 +134,15 @@ namespace Game.Runtime.Resources
 
         private void Produce(ProductionState state)
         {
-            int resourceCount = _productionConfig.ResourceCountPerProduction;
+            var context = new ArtifactProductionContext(
+                state.Item,
+                state.Resource,
+                _productionConfig.ResourceCountPerProduction);
 
-            _resourcesModel.AddResource(state.Resource, resourceCount);
-            state.Item.ProductionComplete(state.Resource, resourceCount);
+            context = _artifactsModel.ProcessProduction(context);
+
+            _resourcesModel.AddResource(state.Resource, context.Count);
+            state.Item.ProductionComplete(state.Resource, context.Count);
         }
 
         private float GetProductionPeriod(ItemBehavior item)

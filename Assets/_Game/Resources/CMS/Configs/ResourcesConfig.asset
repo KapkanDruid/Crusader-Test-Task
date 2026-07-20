@@ -22,7 +22,7 @@ MonoBehaviour:
     - rid: 1064589390405959777
       type: {class: ResourcesViewConfigComponent, ns: Game.Runtime.Data.CMSComponents.Config, asm: Runtime}
       data:
-        _resourceScale: 0.97
+        _resourceScale: 0.71
         _resourceViewPrefab: {fileID: 5576611979014645380, guid: f1b832052a730b7448fc587010181335, type: 3}
         _resourcePopupOffset: {x: 0, y: 200}
         _resourcePopupDuration: 1

@@ -25,7 +25,8 @@ MonoBehaviour:
         - _resource: {fileID: 11400000, guid: 938b9dbd551a9354996afe4a9a6c21b9, type: 2}
           _count: 1
         - _resource: {fileID: 11400000, guid: ee18d5fba2ae9d443ac3a270a65e16ff, type: 2}
-          _count: 1
+          _count: 2
         - _resource: {fileID: 11400000, guid: f45b14c25b8c4fa418c8da888981ff5e, type: 2}
           _count: 1
-        _onEnterColor: {r: 0.3076408, g: 0.5283019, b: 0.18191527, a: 1}
+        _onEnterColor: {r: 0.5294118, g: 0.22563481, b: 0.18039213, a: 1}
+        _resourceScale: 0.42

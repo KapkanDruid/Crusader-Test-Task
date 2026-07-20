@@ -48,4 +48,4 @@ MonoBehaviour:
     - rid: 1064589396514439262
       type: {class: ResourceProductionItemComponent, ns: Game.Runtime.Data.CMSComponents.Item, asm: Runtime}
       data:
-        _resource: {fileID: 11400000, guid: 938b9dbd551a9354996afe4a9a6c21b9, type: 2}
+        _resource: {fileID: 11400000, guid: ee18d5fba2ae9d443ac3a270a65e16ff, type: 2}

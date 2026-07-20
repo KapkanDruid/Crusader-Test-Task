@@ -1,3 +1,4 @@
+using Game.Runtime.Artifacts;
 using Game.Runtime.Resources;
 using Game.Runtime.UI.DropPanels;
 using Game.Runtime.UI.Inventory;
@@ -9,6 +10,8 @@ namespace Game.Runtime.UI
     {
         [SerializeField] private InventoryView _inventoryView;
         [SerializeField] private ResourcesView _resourcesView;
+        [SerializeField] private SpeedButtonsView _speedButtonsView;
+        [SerializeField] private ArtifactsView _artifactsView;
         [SerializeField] private SpawnPanel _spawnPanel; 
         [SerializeField] private DestructionPanel _destructionPanel;
         [SerializeField] private RectTransform _dragArea;
@@ -22,5 +25,7 @@ namespace Game.Runtime.UI
         public DestructionPanel DestructionPanel => _destructionPanel;
         public InventoryView InventoryView => _inventoryView;
         public ResourcesView ResourcesView => _resourcesView;
+        public SpeedButtonsView SpeedButtonsView => _speedButtonsView;
+        public ArtifactsView ArtifactsView => _artifactsView;
     }
 }

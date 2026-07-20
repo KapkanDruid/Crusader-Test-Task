@@ -21,7 +21,7 @@
         <li><a href="https://github.com/Cysharp/R3"><strong>R3 1.3.1</strong></a> - реактивные события, свойства и подписки между моделями, представлениями и игровыми сервисами.</li>
         <li><a href="https://github.com/Cysharp/ObservableCollections"><strong>ObservableCollections 3.3.4</strong></a> - реактивные коллекции для состояния инвентаря, ресурсов и артефактов с интеграцией в R3.</li>
         <li><a href="https://dotween.demigiant.com/getstarted.php"><strong>DOTween 1.3.030</strong></a> - анимация всплывающих уведомлений о полученных ресурсах.</li>
-        <li><a href="https://docs.unity3d.com/Packages/com.unity.inputsystem@1.18/manual/index.html"><strong>Input System 1.18.0</strong></a> - обработка игровых действий, включая поворот предметов и изменение скорости симуляции.</li>
+        <li><a href="https://docs.unity3d.com/Packages/com.unity.inputsystem@1.18/manual/index.html"><strong>Input System 1.18.0</strong></a> - обработка ввода.</li>
       </ul>
     </td>
     <td width="45%" valign="top">

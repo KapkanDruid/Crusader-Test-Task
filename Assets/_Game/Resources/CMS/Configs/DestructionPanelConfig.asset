@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f2319fb035c477aa16ac903c16a9062, type: 3}
+  m_Name: DestructionPanelConfig
+  m_EditorClassIdentifier: CMS.Runtime::Game.CMS.Runtime.CMSAsset
+  entityId: CMS/Configs/DestructionPanelConfig
+  Components:
+  - rid: 1064589396514439275
+  references:
+    version: 2
+    RefIds:
+    - rid: 1064589396514439275
+      type: {class: ItemDestructionPanelConfig, ns: Game.Runtime.Data.CMSComponents.Config, asm: Runtime}
+      data:
+        _resourceCosts:
+        - _resource: {fileID: 11400000, guid: 938b9dbd551a9354996afe4a9a6c21b9, type: 2}
+          _count: 1
+        - _resource: {fileID: 11400000, guid: ee18d5fba2ae9d443ac3a270a65e16ff, type: 2}
+          _count: 1
+        - _resource: {fileID: 11400000, guid: f45b14c25b8c4fa418c8da888981ff5e, type: 2}
+          _count: 1
+        _onEnterColor: {r: 0.3076408, g: 0.5283019, b: 0.18191527, a: 1}

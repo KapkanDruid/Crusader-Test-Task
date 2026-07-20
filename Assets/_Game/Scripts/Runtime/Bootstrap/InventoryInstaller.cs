@@ -23,6 +23,7 @@ namespace Game.Runtime.Bootstrap
             InstallBootstrap();
             InstallInventory();
             InstallSpawnPanel();
+            InstallDestructionPanel();
             InstallItemFactory();
             InstallServices();
             InstallResources();
@@ -64,6 +65,15 @@ namespace Game.Runtime.Bootstrap
                 .AsSingle();
 
             Container.QueueForInject(_viewHost.SpawnPanel);
+        }
+
+        private void InstallDestructionPanel()
+        {
+            Container.BindInterfacesAndSelfTo<DestructionPanel>()
+                .FromInstance(_viewHost.DestructionPanel)
+                .AsSingle();
+
+            Container.QueueForInject(_viewHost.DestructionPanel);
         }
 
         private void InstallItemFactory()

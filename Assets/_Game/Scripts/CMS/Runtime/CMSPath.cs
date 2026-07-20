@@ -10,6 +10,7 @@ namespace Game.CMS.Runtime
     {
         public static class Configs
         {
+            public const string DestructionPanelConfig = "CMS/Configs/DestructionPanelConfig";
             public const string InventoryConfig = "CMS/Configs/InventoryConfig";
             public const string ResourcesConfig = "CMS/Configs/ResourcesConfig";
             public const string SpawnConfig = "CMS/Configs/SpawnConfig";

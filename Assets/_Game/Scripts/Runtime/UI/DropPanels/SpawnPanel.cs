@@ -52,6 +52,13 @@ namespace Game.Runtime.UI.DropPanels
             }
         }
 
+        public void SpawnItem()
+        {
+            var itemDataList = CMSContainer.GetAll<IsStartItemComponent>();
+            var item = _itemFactory.Create(itemDataList.GetRandom(), _viewHost.DragArea);
+            _storedItems.Add(item);
+        }
+
         public void ReturnItems(IReadOnlyList<ItemBehavior> items)
         {
             if (items.Count == 0)

@@ -10,6 +10,7 @@ namespace Game.Runtime.UI
         [SerializeField] private InventoryView _inventoryView;
         [SerializeField] private ResourcesView _resourcesView;
         [SerializeField] private SpawnPanel _spawnPanel; 
+        [SerializeField] private DestructionPanel _destructionPanel;
         [SerializeField] private RectTransform _dragArea;
         [SerializeField] private Canvas _canvas;
         [SerializeField] private RectTransform _resourcePopupRoot;
@@ -18,6 +19,7 @@ namespace Game.Runtime.UI
         public RectTransform ResourcePopupRoot => _resourcePopupRoot;
         public Canvas Canvas => _canvas;
         public SpawnPanel SpawnPanel => _spawnPanel;
+        public DestructionPanel DestructionPanel => _destructionPanel;
         public InventoryView InventoryView => _inventoryView;
         public ResourcesView ResourcesView => _resourcesView;
     }

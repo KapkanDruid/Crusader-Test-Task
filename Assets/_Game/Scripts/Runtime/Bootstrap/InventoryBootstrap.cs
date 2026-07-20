@@ -13,6 +13,7 @@ namespace Game.Runtime.Bootstrap
         private readonly InputService _inputService;
         private readonly InventoryView _inventoryView;
         private readonly SpawnPanel _spawnPanel;
+        private readonly DestructionPanel _destructionPanel;
         private readonly ResourcesView _resourcesView;
         private readonly ResourceProductionHandler _resourceProductionHandler;
         private readonly ResourcePopupService _resourcePopupService;
@@ -21,6 +22,7 @@ namespace Game.Runtime.Bootstrap
                                   InventoryView inventoryView,
                                   InputService inputService,
                                   SpawnPanel spawnPanel,
+                                  DestructionPanel destructionPanel,
                                   ResourcesView resourcesView,
                                   ResourceProductionHandler resourceProductionHandler,
                                   ResourcePopupService resourcePopupService)
@@ -29,6 +31,7 @@ namespace Game.Runtime.Bootstrap
             _inputService = inputService;
             _inventoryView = inventoryView;
             _spawnPanel = spawnPanel;
+            _destructionPanel = destructionPanel;
             _resourcesView = resourcesView;
             _resourceProductionHandler = resourceProductionHandler;
             _resourcePopupService = resourcePopupService;
@@ -43,6 +46,7 @@ namespace Game.Runtime.Bootstrap
             _resourcesView.Setup();
             _resourcePopupService.Setup();
             _resourceProductionHandler.Setup();
+            _destructionPanel.Setup();
             _spawnPanel.SpawnItems();
         }
     }

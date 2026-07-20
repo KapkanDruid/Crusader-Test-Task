@@ -26,6 +26,16 @@ namespace Game.Runtime.Resources
                 _resources.Add(entity, count);
         }
 
+        public bool HasResource(CMSEntity entity, int count)
+        {
+            ValidateOperation(entity, count);
+
+            if (!entity.Is<ResourceComponent>())
+                return false;
+
+            return _resources.TryGetValue(entity, out int currentCount) && currentCount >= count;
+        }
+
         public void RemoveResource(CMSEntity entity, int count)
         {
             ValidateOperation(entity, count);
@@ -51,29 +61,6 @@ namespace Game.Runtime.Resources
 
             if (count <= 0)
                 throw new ArgumentOutOfRangeException(nameof(count), count, "Resource count must be greater than zero.");
-        }
-
-        [QuickTestHotkey(UnityEngine.KeyCode.A)]
-        private void AddOne()
-        {
-            var random = CMSContainer.GetAll<ResourceComponent>().GetRandom();
-            AddResource(random, 1);
-
-            LogUtil.Log("AddOne");
-        }
-
-        [QuickTestHotkey(UnityEngine.KeyCode.S)]
-        private void AddTwo()
-        {
-            var random = CMSContainer.GetAll<ResourceComponent>().GetRandom();
-            AddResource(random, 2);
-        }
-
-        [QuickTestHotkey(UnityEngine.KeyCode.R)]
-        private void RemoveOne()
-        {
-            var random = CMSContainer.GetAll<ResourceComponent>().GetRandom();
-            RemoveResource(random, 1);
         }
     }
 }

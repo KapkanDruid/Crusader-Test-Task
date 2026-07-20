@@ -1,5 +1,7 @@
 # Crusader Test Task
 
+<br>
+
 ## Введение
 
 <table>
@@ -35,7 +37,11 @@
   </tr>
 </table>
 
+<br>
+
 ## Использованные подходы
+
+<br>
 
 ### Dependency Injection
 
@@ -65,6 +71,8 @@ private void Construct(InventoryModel model, IInventoryViewCommands commands)
 - жизненный цикл сервисов контролируется контейнером.
 
 Пример находится в [InventoryView](Assets/_Game/Scripts/Runtime/UI/Inventory/InventoryView.cs).
+
+<br>
 
 ### Installer
 
@@ -102,6 +110,8 @@ Container.BindInterfacesAndSelfTo<InventoryView>()
     .AsSingle();
 ```
 Полная регистрация находится в [InventoryInstaller](Assets/_Game/Scripts/Runtime/Bootstrap/InventoryInstaller.cs).
+
+<br>
 
 ### Subcontainer
 
@@ -144,6 +154,8 @@ Container.BindInterfacesAndSelfTo<ItemView>()
 В результате каждый предмет получает собственные экземпляры `ItemTriggerHandler`, `ItemDragHandler` и `ItemView`. Эти зависимости не смешиваются с обработчиками других предметов и уничтожаются вместе с его контекстом.
 
 Реализация находится в [ItemInstaller](Assets/_Game/Scripts/Runtime/Items/ItemInstaller.cs) и [ItemBehavior.Factory](Assets/_Game/Scripts/Runtime/Items/ItemBehavior.cs).
+
+<br>
 
 ### Инкапсуляция изменения состояния модели
 
@@ -193,6 +205,8 @@ _commands.RemoveCell(gridPosition);
 
 Реализация находится в [IInventoryViewCommands](Assets/_Game/Scripts/Runtime/UI/Inventory/IInventoryViewCommands.cs), [InventoryModel](Assets/_Game/Scripts/Runtime/UI/Inventory/InventoryModel.cs) и [InventoryView](Assets/_Game/Scripts/Runtime/UI/Inventory/InventoryView.cs).
 
+<br>
+
 ### Реактивный подход
 
 R3 и ObservableCollections используются для передачи изменений состояния, пользовательского ввода и игрового времени. Системы реагируют на события и не вызывают ручное обновление зависимых объектов.
@@ -233,6 +247,8 @@ _tickService.OnTick
 
 Примеры находятся в [InventoryView](Assets/_Game/Scripts/Runtime/UI/Inventory/InventoryView.cs), [ResourcesView](Assets/_Game/Scripts/Runtime/Resources/ResourcesView.cs), [InputService](Assets/_Game/Scripts/Runtime/Input/InputService.cs) и [TickService](Assets/_Game/Scripts/Runtime/Ticks/TickService.cs).
 
+<br>
+
 ### Архитектурный подход и интерпретация C4
 
 Модель C4 используется для разделения проекта по уровням ответственности и определения границ модулей.
@@ -270,9 +286,13 @@ public void SetDimmed(bool isDimmed)
 
 Примеры фасадов находятся в [ItemBehavior](Assets/_Game/Scripts/Runtime/Items/ItemBehavior.cs) и [ArtifactsModel](Assets/_Game/Scripts/Runtime/Artifacts/ArtifactsModel.cs).
 
+<br>
+
 ## CMS - Content Management System
 
 CMS - система конфигов, собираемых из компонентов. Каждый `CMSAsset` хранит набор независимых `CMSComponent`, которые определяют его данные и поведение.
+
+<br>
 
 ### Гибкая конфигурация
 
@@ -314,6 +334,8 @@ if (!artifact.Is<AdditionalResourceArtifactComponent>(out var component))
 
 Пример находится в [AdditionalResourceArtifactHandler](Assets/_Game/Scripts/Runtime/Artifacts/Handlers/AdditionalResourceArtifactHandler.cs).
 
+<br>
+
 ### Редактор компонента
 
 Для отдельного компонента можно определить собственный `PropertyDrawer` без изменения общего редактора CMS. Для `GridCMSComponent` сделан редактор, в котором паттерн сетки редактируется визуально:
@@ -331,6 +353,8 @@ public sealed class GridCMSComponentEditor : PropertyDrawer
 </p>
 
 Редактор находится в [GridCMSComponentEditor](Assets/_Game/Scripts/Editor/GridCMSComponentEditor.cs).
+
+<br>
 
 ### Один конфиг как директория
 

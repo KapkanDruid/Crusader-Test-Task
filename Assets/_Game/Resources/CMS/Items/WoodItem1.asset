@@ -40,7 +40,7 @@ MonoBehaviour:
           - {x: -1, y: 1}
           - {x: 0, y: -1}
           - {x: 0, y: 0}
-          gridSize: {x: 3, y: 5}
+          gridSize: {x: 3, y: 3}
     - rid: 1064589345942405212
       type: {class: IsStartItemComponent, ns: Game.Runtime.Data.CMSComponents.Item, asm: Runtime}
       data: 

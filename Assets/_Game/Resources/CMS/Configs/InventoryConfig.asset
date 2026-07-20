@@ -16,6 +16,7 @@ MonoBehaviour:
   Components:
   - rid: 1064589315204710608
   - rid: 1064589315204710616
+  - rid: 1064589396514439265
   references:
     version: 2
     RefIds:
@@ -110,5 +111,13 @@ MonoBehaviour:
       type: {class: InventoryViewConfigComponent, ns: Game.Runtime.Data.CMSComponents.Config, asm: Runtime}
       data:
         _cellSprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
+        _redTileColor: {r: 0.8962264, g: 0.41006586, b: 0.41006586, a: 1}
+        _yellowTileColor: {r: 0.9433962, g: 0.8410467, b: 0.43164828, a: 1}
+        _greenTileColor: {r: 0.5310609, g: 0.9622642, b: 0.5310609, a: 1}
         _cellSize: 150
         _cellImageSize: 130
+    - rid: 1064589396514439265
+      type: {class: InventoryTileGeneratorConfigComponent, ns: Game.Runtime.Data.CMSComponents.Config, asm: Runtime}
+      data:
+        _redTileBorderSize: 1
+        _yellowTilePercentage: 0.33333334

@@ -16,13 +16,18 @@ namespace Game.Runtime.UI.Inventory
     public class InventoryModel : IInventoryViewCommands, IItemPositionHandler, IItemHolder, IDisposable
     {
         private ObservableHashSet<Vector2Int> _gridPositions = new();
+        private ObservableDictionary<Vector2Int, InventoryTileType> _tileTypes = new();
         private Dictionary<Vector2Int, RectTransform> _gridCells = new();
         private Dictionary<Vector2Int, ItemBehavior> _itemsByGridPosition = new();
+        private Dictionary<ItemBehavior, Vector2Int> _itemPositions = new();
+        private ObservableHashSet<ItemBehavior> _itemsInInventory = new();
         private ReactiveProperty<(ItemBehavior Item, RectTransform Slot, ItemRotation Rotation)> _placementPreview = new();
         private SpawnPanel _spawnPanel;
+        private InventoryTileGeneratorConfigComponent _tileGeneratorConfig;
 
-        public IObservableCollection<Vector2Int> GridPositions => _gridPositions; 
-        public IEnumerable<ItemBehavior> ItemsInInventory => _itemsByGridPosition.Values.Distinct();
+        public IObservableCollection<Vector2Int> GridPositions => _gridPositions;
+        public IReadOnlyObservableDictionary<Vector2Int, InventoryTileType> TileTypes => _tileTypes;
+        public IObservableCollection<ItemBehavior> ItemsInInventory => _itemsInInventory;
         public Observable<(ItemBehavior Item, RectTransform Slot, ItemRotation Rotation)> PlacementPreview => _placementPreview;
 
         public InventoryModel(SpawnPanel spawnPanel)
@@ -34,8 +39,51 @@ namespace Game.Runtime.UI.Inventory
         {
             var configEntity = CMSContainer.Get(CMSPath.Configs.InventoryConfig);
             var gridConfig = configEntity.GetComponent<GridCMSComponent>();
+            _tileGeneratorConfig = configEntity.GetComponent<InventoryTileGeneratorConfigComponent>();
 
             _gridPositions.AddRange(gridConfig.GridPattern);
+            GenerateTileTypes();
+        }
+
+        public InventoryTileType GetTileType(ItemBehavior item, Vector2Int itemTilePosition)
+        {
+            Vector2Int gridPosition = _itemPositions[item] + itemTilePosition;
+            return _tileTypes[gridPosition];
+        }
+
+        private void GenerateTileTypes()
+        {
+            var gridPositions = _gridPositions.ToList();
+            int minX = gridPositions.Min(position => position.x);
+            int maxX = gridPositions.Max(position => position.x);
+            int minY = gridPositions.Min(position => position.y);
+            int maxY = gridPositions.Max(position => position.y);
+            var remainingPositions = new List<Vector2Int>();
+
+            foreach (var gridPosition in gridPositions)
+            {
+                bool isRed = gridPosition.x < minX + _tileGeneratorConfig.RedTileBorderSize
+                             || gridPosition.x > maxX - _tileGeneratorConfig.RedTileBorderSize
+                             || gridPosition.y < minY + _tileGeneratorConfig.RedTileBorderSize
+                             || gridPosition.y > maxY - _tileGeneratorConfig.RedTileBorderSize;
+
+                if (isRed)
+                    _tileTypes.Add(gridPosition, InventoryTileType.Red);
+                else
+                    remainingPositions.Add(gridPosition);
+            }
+
+            remainingPositions.Shuffle();
+            int yellowTileCount = Mathf.CeilToInt(remainingPositions.Count * _tileGeneratorConfig.YellowTilePercentage);
+
+            for (int i = 0; i < remainingPositions.Count; i++)
+            {
+                var tileType = i < yellowTileCount
+                    ? InventoryTileType.Yellow
+                    : InventoryTileType.Green;
+
+                _tileTypes.Add(remainingPositions[i], tileType);
+            }
         }
 
         bool IInventoryViewCommands.RemoveCell(Vector2Int gridPosition)
@@ -162,6 +210,12 @@ namespace Game.Runtime.UI.Inventory
                 _itemsByGridPosition[gridPosition] = item;
             }
 
+            TryGetSlotPosition(slot, out var itemPosition);
+            _itemPositions[item] = itemPosition;
+
+            if (!_itemsInInventory.Contains(item))
+                _itemsInInventory.Add(item);
+
             _spawnPanel.ReturnItems(displacedItems);
         }
 
@@ -186,6 +240,9 @@ namespace Game.Runtime.UI.Inventory
             {
                 _itemsByGridPosition.Remove(occupiedPosition);
             }
+
+            _itemPositions.Remove(item);
+            _itemsInInventory.Remove(item);
 
             return occupiedPositions.Count > 0;
         }

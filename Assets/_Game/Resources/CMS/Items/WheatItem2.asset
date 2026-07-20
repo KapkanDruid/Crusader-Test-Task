@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f2319fb035c477aa16ac903c16a9062, type: 3}
+  m_Name: WheatItem2
+  m_EditorClassIdentifier: CMS.Runtime::Game.CMS.Runtime.CMSAsset
+  entityId: CMS/Items/WheatItem2
+  Components:
+  - rid: 1064589315204710685
+  - rid: 1064589315204710686
+  - rid: 1064589345942405212
+  - rid: 1064589396514439262
+  references:
+    version: 2
+    RefIds:
+    - rid: 1064589315204710685
+      type: {class: ItemViewComponent, ns: Game.Runtime.Data.CMSComponents.Item, asm: Runtime}
+      data:
+        _cellSprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+        _itemColor: {r: 0.735849, g: 0.6184972, b: 0.18396226, a: 1}
+        _productionTileColor: {r: 0.5283019, g: 0.44803357, b: 0.14702742, a: 1}
+        _productionProgressColor: {r: 0.9245283, g: 0.74544966, b: 0.082858644, a: 1}
+        _cellSize: 150
+        _cellImageSize: 120
+        _dimmedAlpha: 0.69
+    - rid: 1064589315204710686
+      type: {class: GridCMSComponent, ns: Game.Runtime.Data.CMSComponents.Config, asm: Runtime}
+      data:
+        gridData:
+          gridPattern:
+          - {x: 0, y: -2}
+          - {x: 0, y: -1}
+          - {x: 0, y: 0}
+          - {x: 1, y: 0}
+          gridSize: {x: 3, y: 5}
+    - rid: 1064589345942405212
+      type: {class: IsStartItemComponent, ns: Game.Runtime.Data.CMSComponents.Item, asm: Runtime}
+      data: 
+    - rid: 1064589396514439262
+      type: {class: ResourceProductionItemComponent, ns: Game.Runtime.Data.CMSComponents.Item, asm: Runtime}
+      data:
+        _resource: {fileID: 11400000, guid: ee18d5fba2ae9d443ac3a270a65e16ff, type: 2}

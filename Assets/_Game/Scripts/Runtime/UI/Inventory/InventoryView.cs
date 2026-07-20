@@ -24,6 +24,7 @@ namespace Game.Runtime.UI.Inventory
         private InventoryViewConfigComponent _config;
         private readonly CompositeDisposable _disposable = new();
         private readonly Dictionary<Vector2Int, RectTransform> _cells = new();
+        private readonly Dictionary<Vector2Int, Image> _cellImages = new();
         private readonly HashSet<ItemBehavior> _dimmedItems = new();
         private ItemBehavior _highlightedItem;
 
@@ -48,6 +49,11 @@ namespace Game.Runtime.UI.Inventory
                 .ObserveRemove()
                 .Select(eventData => eventData.Value)
                 .Subscribe(RemoveCel)
+                .AddTo(_disposable);
+
+            _model.TileTypes
+                .ObserveAdd()
+                .Subscribe(eventData => SetCellType(eventData.Value.Key, eventData.Value.Value))
                 .AddTo(_disposable);
 
             _model.PlacementPreview
@@ -81,6 +87,7 @@ namespace Game.Runtime.UI.Inventory
 
             _commands.SetCell(gridPosition, cell);
             _cells[gridPosition] = cell;
+            _cellImages[gridPosition] = image;
         }
 
         private void RemoveCel(Vector2Int gridPosition)
@@ -88,6 +95,18 @@ namespace Game.Runtime.UI.Inventory
             _commands.RemoveCell(gridPosition);
             Object.Destroy(_cells[gridPosition].gameObject);
             _cells.Remove(gridPosition);
+            _cellImages.Remove(gridPosition);
+        }
+
+        private void SetCellType(Vector2Int gridPosition, InventoryTileType tileType)
+        {
+            _cellImages[gridPosition].color = tileType switch
+            {
+                InventoryTileType.Red => _config.RedTileColor,
+                InventoryTileType.Yellow => _config.YellowTileColor,
+                InventoryTileType.Green => _config.GreenTileColor,
+                _ => throw new ArgumentOutOfRangeException(nameof(tileType), tileType, null),
+            };
         }
 
         private void HandlePlacementPreview((ItemBehavior Item, RectTransform Slot, ItemRotation Rotation) preview)

@@ -1,5 +1,6 @@
 ﻿using Game.CMS.Runtime;
 using Game.Runtime.Data.CMSComponents.Config;
+using Game.Runtime.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace Game.Runtime.Items
         [SerializeField] private RectTransform _triggerRoot;
         [SerializeField] private RectTransform _viewRoot;
 
+        private Vector2Int _productionTilePosition;
         private RectTransform _dragArea;
         private ItemTriggerHandler _itemTriggerHandler;
         private ItemDragHandler _itemDragHandler;
@@ -23,6 +25,20 @@ namespace Game.Runtime.Items
         public CMSEntity ItemDataEntity { get; private set; }
         public RectTransform ItemRoot => _itemRoot;
         public ItemRotation CurrentRotation => _itemDragHandler.CurrentRotation;
+        public Vector2Int ProductionTilePosition
+        {
+            get
+            {
+                return _itemDragHandler.CurrentRotation switch
+                {
+                    ItemRotation.Up => _productionTilePosition,
+                    ItemRotation.Right => new Vector2Int(_productionTilePosition.y, -_productionTilePosition.x),
+                    ItemRotation.Down => new Vector2Int(-_productionTilePosition.x, -_productionTilePosition.y),
+                    ItemRotation.Left => new Vector2Int(-_productionTilePosition.y, _productionTilePosition.x),
+                    _ => throw new ArgumentOutOfRangeException(nameof(_itemDragHandler.CurrentRotation), _itemDragHandler.CurrentRotation, null)
+                };
+            }
+        }
         public List<Vector2Int> SlotPositions
         {
             get
@@ -66,10 +82,11 @@ namespace Game.Runtime.Items
             SetupTransform();
             _itemTriggerHandler.SetupTrigger(_triggerRoot);
             _itemDragHandler.Setup(_dragArea, _itemRoot);
-            _itemView.Setup(_viewRoot, _itemRoot);
+            _initialSlotPositions.AddRange(ItemDataEntity.GetComponent<GridCMSComponent>().GridPattern);
+            _productionTilePosition = _initialSlotPositions.GetRandom();
+            _itemView.Setup(_viewRoot, _itemRoot, _productionTilePosition);
 
             _itemDragHandler.IsDraggable = true;
-            _initialSlotPositions.AddRange(ItemDataEntity.GetComponent<GridCMSComponent>().GridPattern);
         }
 
         public void ShowInventoryHighlight(RectTransform inventoryRoot, Vector2 position)
@@ -85,6 +102,16 @@ namespace Game.Runtime.Items
         public void SetDimmed(bool isDimmed)
         {
             _itemView.SetDimmed(isDimmed);
+        }
+
+        public void SetProductionPercentage(float percentage)
+        {
+            _itemView.SetProductionPercentage(percentage);
+        }
+
+        public void ProductionComplete(CMSEntity resource, int count)
+        {
+            _itemView.ProductionComplete(resource, count);
         }
 
         private void SetupTransform()

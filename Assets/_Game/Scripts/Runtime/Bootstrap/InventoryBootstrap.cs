@@ -1,5 +1,6 @@
 ﻿using Game.CMS.Runtime;
 using Game.Runtime.Input;
+using Game.Runtime.Resources;
 using Game.Runtime.UI.DropPanels;
 using Game.Runtime.UI.Inventory;
 using Zenject;
@@ -12,13 +13,25 @@ namespace Game.Runtime.Bootstrap
         private readonly InputService _inputService;
         private readonly InventoryView _inventoryView;
         private readonly SpawnPanel _spawnPanel;
+        private readonly ResourcesView _resourcesView;
+        private readonly ResourceProductionHandler _resourceProductionHandler;
+        private readonly ResourcePopupService _resourcePopupService;
 
-        public InventoryBootstrap(InventoryModel inventoryModel, InventoryView inventoryView, InputService inputService, SpawnPanel spawnPanel)
+        public InventoryBootstrap(InventoryModel inventoryModel,
+                                  InventoryView inventoryView,
+                                  InputService inputService,
+                                  SpawnPanel spawnPanel,
+                                  ResourcesView resourcesView,
+                                  ResourceProductionHandler resourceProductionHandler,
+                                  ResourcePopupService resourcePopupService)
         {
             _inventoryModel = inventoryModel;
             _inputService = inputService;
             _inventoryView = inventoryView;
             _spawnPanel = spawnPanel;
+            _resourcesView = resourcesView;
+            _resourceProductionHandler = resourceProductionHandler;
+            _resourcePopupService = resourcePopupService;
         }
 
         public void Initialize()
@@ -27,8 +40,10 @@ namespace Game.Runtime.Bootstrap
             _inputService.Enable();
             _inventoryView.Setup();
             _inventoryModel.GenerateGrid();
+            _resourcesView.Setup();
+            _resourcePopupService.Setup();
+            _resourceProductionHandler.Setup();
             _spawnPanel.SpawnItems();
         }
-
     }
 }

@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: CMS.Runtime::Game.CMS.Runtime.CMSAsset
   entityId: CMS/Configs/SpawnConfig
   Components:
-  - rid: 1064589345942405206
+  - rid: 1064589345942405233
   references:
     version: 2
     RefIds:
-    - rid: 1064589345942405206
-      type: {class: ItemSpawnConfig, ns: Game.Runtime.Data.CMSComponents.Config, asm: Runtime}
+    - rid: 1064589345942405233
+      type: {class: ItemSpawnPanelConfig, ns: Game.Runtime.Data.CMSComponents.Config, asm: Runtime}
       data:
-        _spawnCount: 6
+        _spawnCount: 5
+        _onEnterColor: {r: 0.3076408, g: 0.5283019, b: 0.18191527, a: 1}

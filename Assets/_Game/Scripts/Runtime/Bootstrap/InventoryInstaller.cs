@@ -2,9 +2,12 @@
 using Game.Runtime.DragAndDrop;
 using Game.Runtime.Input;
 using Game.Runtime.Items;
+using Game.Runtime.Resources;
+using Game.Runtime.Ticks;
 using Game.Runtime.UI;
 using Game.Runtime.UI.DropPanels;
 using Game.Runtime.UI.Inventory;
+using System;
 using UnityEngine;
 using Zenject;
 
@@ -22,6 +25,8 @@ namespace Game.Runtime.Bootstrap
             InstallSpawnPanel();
             InstallItemFactory();
             InstallServices();
+            InstallResources();
+            InstallTicks();
         }
 
         private void InstallBootstrap()
@@ -32,8 +37,18 @@ namespace Game.Runtime.Bootstrap
 
         private void InstallInventory()
         {
-            Container.BindInterfacesAndSelfTo<InventoryModel>()
+            Container.Bind(
+                    typeof(InventoryModel),
+                    typeof(IItemPositionHandler),
+                    typeof(IItemHolder),
+                    typeof(IDisposable))
+                .To<InventoryModel>()
                 .AsSingle();
+
+            Container.Bind<IInventoryViewCommands>()
+                .To<InventoryModel>()
+                .FromResolve()
+                .WhenInjectedInto<InventoryView>();
 
             Container.BindInterfacesAndSelfTo<InventoryView>()
                 .FromInstance(_viewHost.InventoryView)
@@ -68,6 +83,30 @@ namespace Game.Runtime.Bootstrap
 
             Container.Bind<UIViewHost>()
                 .FromInstance(_viewHost)
+                .AsSingle();
+        }
+
+        private void InstallResources()
+        {
+            Container.Bind<ResourcesModel>()
+                .AsSingle();
+
+            Container.BindInterfacesAndSelfTo<ResourceProductionHandler>()
+                .AsSingle();
+
+            Container.BindInterfacesAndSelfTo<ResourcePopupService>()
+                .AsSingle();
+
+            Container.BindInterfacesAndSelfTo<ResourcesView>()
+                .FromInstance(_viewHost.ResourcesView)
+                .AsSingle();
+
+            Container.QueueForInject(_viewHost.ResourcesView);
+        }
+
+        private void InstallTicks()
+        {
+            Container.BindInterfacesAndSelfTo<TickService>()
                 .AsSingle();
         }
     }

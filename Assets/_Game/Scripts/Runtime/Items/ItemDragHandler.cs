@@ -1,5 +1,6 @@
 ﻿using Game.Runtime.DragAndDrop;
 using Game.Runtime.Input;
+using Game.Runtime.UI;
 using Game.Runtime.Utils;
 using R3;
 using System;
@@ -15,6 +16,7 @@ namespace Game.Runtime.Items
         private readonly InputService _inputService;
         private readonly DragService _dragService;
         private readonly ItemBehavior _behavior;
+        private readonly UIViewHost _viewHost;
 
         private RectTransform _dragArea;
         private RectTransform _itemRoot;
@@ -42,12 +44,14 @@ namespace Game.Runtime.Items
         public ItemDragHandler(ItemTriggerHandler triggerHandler,
                                InputService inputService,
                                ItemBehavior behavior,
-                               DragService dragService)
+                               DragService dragService,
+                               UIViewHost viewHost)
         {
             _triggerHandler = triggerHandler;
             _inputService = inputService;
             _dragService = dragService;
             _behavior = behavior;
+            _viewHost = viewHost;
         }
 
         public void Setup(RectTransform dragArea, RectTransform itemRoot)
@@ -55,8 +59,9 @@ namespace Game.Runtime.Items
             _dragArea = dragArea;
             _itemRoot = itemRoot;
 
-            var canvas = _triggerHandler.TriggerRoot.GetComponentInParent<Canvas>(true);
-            _camera = canvas.renderMode == RenderMode.ScreenSpaceCamera ? canvas.worldCamera : null;
+            _camera = _viewHost.Canvas.renderMode == RenderMode.ScreenSpaceOverlay
+                ? null
+                : _viewHost.Canvas.worldCamera;
 
             _triggerHandler.OnBeginDrag
                 .Subscribe(OnBeginDrag)

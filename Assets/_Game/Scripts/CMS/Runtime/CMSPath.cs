@@ -11,12 +11,27 @@ namespace Game.CMS.Runtime
         public static class Configs
         {
             public const string InventoryConfig = "CMS/Configs/InventoryConfig";
+            public const string ResourcesConfig = "CMS/Configs/ResourcesConfig";
             public const string SpawnConfig = "CMS/Configs/SpawnConfig";
         }
         public static class Items
         {
-            public const string Item1 = "CMS/Items/Item1";
-            public const string Item2 = "CMS/Items/Item2";
+            public const string Irontem1 = "CMS/Items/Irontem1";
+            public const string Irontem2 = "CMS/Items/Irontem2";
+            public const string Irontem3 = "CMS/Items/Irontem3";
+            public const string WheatItem1 = "CMS/Items/WheatItem1";
+            public const string WheatItem2 = "CMS/Items/WheatItem2";
+            public const string WheatItem3 = "CMS/Items/WheatItem3";
+            public const string WoodItem1 = "CMS/Items/WoodItem1";
+            public const string WoodItem2 = "CMS/Items/WoodItem2";
+            public const string WoodItem3 = "CMS/Items/WoodItem3";
+            public const string WoodItem4 = "CMS/Items/WoodItem4";
+        }
+        public static class Resource
+        {
+            public const string Iron = "CMS/Resource/Iron";
+            public const string Wheat = "CMS/Resource/Wheat";
+            public const string Wood = "CMS/Resource/Wood";
         }
     }
 }
